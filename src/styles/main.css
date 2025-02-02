@@ -1,0 +1,413 @@
+:host {
+  display: block;
+  width: 100%;
+  min-width: 250px;
+  --primary-color: #4a90e2;
+  --background-color: #f5f5f5;
+  --border-radius: 8px;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+@namespace svg "http://www.w3.org/2000/svg";
+/**
+ * Total Reset
+ * ==================================================
+ * Universal reset of styles for all elements and pseudo-elements for customizing Web Components and browser extensions.
+ */
+/* Selector targets all elements except tables and svg elements */
+*:where(:not(table, thead, tbody, tr, th, td, svg|*)) {
+  /* Resets all styles for the selected elements */
+  all: unset;
+  /* Set box-sizing to border-box so padding and borders do not affect the total width and height of elements */
+  box-sizing: border-box;
+  /* Resets styles for ::before and ::after pseudo-elements */
+}
+*:where(:not(table, thead, tbody, tr, th, td, svg|*))::before, *:where(:not(table, thead, tbody, tr, th, td, svg|*))::after {
+  /* Unsets all styles for pseudo-elements */
+  all: unset;
+  /* Set box-sizing to border-box for pseudo-elements */
+  box-sizing: border-box;
+}
+
+a,
+abbr,
+acronym,
+address,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+button,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+main,
+mark,
+menu,
+nav,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+  font-size: 100%;
+}
+
+article,
+aside,
+blockquote,
+details,
+div,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+main,
+menu,
+nav,
+p,
+pre,
+section {
+  display: block;
+}
+
+audio,
+canvas,
+video,
+img,
+picture,
+svg {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+canvas,
+iframe {
+  display: block;
+}
+
+[hidden] {
+  display: none;
+}
+
+head,
+link,
+meta,
+script,
+title,
+template,
+style {
+  display: none;
+}
+
+a[href],
+label[for],
+select,
+button {
+  cursor: pointer;
+}
+
+/**
+ * Table
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-indent: 0;
+}
+
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+  font-size: 100%;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+}
+
+/**
+ * Forms
+ */
+input {
+  appearance: none;
+  display: inline-block;
+}
+
+input[type=color] {
+  width: 15px;
+  height: 15px;
+}
+
+input[type=color]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type=color]::-webkit-color-swatch {
+  border: none;
+}
+
+input:required,
+input {
+  box-shadow: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset;
+}
+
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-decoration,
+input[type=search]::-webkit-search-results-button,
+input[type=search]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+input[type=search] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+textarea {
+  overflow: auto;
+  vertical-align: top;
+  resize: vertical;
+}
+
+input:focus {
+  outline: none;
+}
+
+/**
+ * Only apply smooth scrolling when the user hasn't set their motion preference to "reduce"
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+/* Main container */
+.container {
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  padding: 12px;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Controls wrapper */
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Play/Pause button */
+.play-button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.play-button:hover {
+  background-color: #357abd;
+}
+
+.play-button svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+/* Custom volume slider */
+.volume-slider {
+  position: relative;
+  width: 100px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.volume-track {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+}
+
+.volume-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 2px;
+  width: 100%;
+}
+
+.volume-handle {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.volume-handle:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+  background: var(--primary-color);
+}
+
+.volume-handle.active {
+  cursor: grabbing;
+  background: var(--primary-color);
+}
+
+/* Progress bar styles */
+.progress-container {
+  background: #ddd;
+  height: 4px;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 2px;
+  width: 0;
+  transition: width 0.1s linear;
+}
+
+/* Time display */
+.time-display {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
+  text-align: right;
+}
+
+/* Prevent text selection while dragging */
+.volume-slider.dragging {
+  user-select: none;
+}
+
+.volume-display {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+}
+
+.visualizer {
+  display: block;
+  width: 100%;
+  height: 200px;
+  background-color: #000;
+  margin-top: 10px;
+}
+/*# sourceMappingURL=main.css.map */

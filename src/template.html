@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Controls -->
+    <div class="controls">
+
+      <!-- Play Button -->
+      <button class="play-button">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      </button>
+
+      <!-- Volume Slider -->
+      <div class="volume-slider" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" tabindex="0">
+        <div class="volume-track">
+          <div class="volume-fill" style="width: 100%;"></div>
+          <div class="volume-handle" style="left: 100%;"></div>
+        </div>
+      </div>
+
+      <div class="volume-display">0%</div>
+    </div>
+
+    <!-- Progress Container -->
+    <div class="progress-container">
+      <div class="progress-bar" style="width: 0.324748%;"></div>
+    </div>
+
+    <!-- Time Display -->
+    <div class="time-display">0:00 / 6:12</div>
+
+    <canvas class="visualizer" width="600" height="200"></canvas>
+  </div>
+
+</body>
+</html>

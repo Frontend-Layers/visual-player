@@ -1,0 +1,35 @@
+{
+  "htmlPreview": {
+    "src": [
+      "./src/home.html",
+      "./src/article.html",
+      "./src/article.html",
+      "./src/product.html"
+    ],
+    "dest": "./src/report/preview-pages.html"
+  },
+  "commonFiles": [
+    {
+      "src": [
+        "./src/_redirects",
+        "./src/_headers",
+        "./src/robots.txt",
+        "./src/favicon.ico",
+        "./src/music/",
+        "./src/favicons/",
+        "./src/report/",
+        "./src/report/"
+      ],
+      "dest": "./dist/"
+    },
+    {
+      "src": "./src/test/",
+      "dest": "./dist/report/"
+    }
+  ],
+  "scripts": {
+    "src": [
+      "./dist/javascript/app.js"
+    ]
+  }
+}
