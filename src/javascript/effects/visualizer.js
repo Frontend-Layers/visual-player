@@ -1,4 +1,4 @@
-class WinampAudioAnalyzer {
+class Visualizer {
 
   constructor(ctx, audio) {
     this.ctx = ctx;
@@ -9,31 +9,36 @@ class WinampAudioAnalyzer {
     this.source.connect(this.analyser);
     this.analyser.connect(this.audioContext.destination);
 
-    // Set up analyser
-    this.analyser.fftSize = 256;
+    // Configure analyser for better resolution
+    this.analyser.fftSize = 512; // Increased FFT size for better frequency resolution
     this.bufferLength = this.analyser.frequencyBinCount;
     this.dataArray = new Uint8Array(this.bufferLength);
 
     // Visualization properties
-    this.barWidth = 6;
     this.barSpacing = 2;
-    this.barCount = 48;
     this.minHeight = 2;
-    this.peakDecayRate = 0.8;
+    this.peakDecayRate = 0.9; // Slow down peak decay for smoother visuals
     this.peakHoldTime = 30;
+
+    // Set default color scheme
+    this.setColorScheme(Visualizer.COLOR_SCHEMES.CLASSIC);
+
+    // Initial values for dynamic sizing
+    this.resizeCanvas();
+    window.addEventListener('resize', () => this.resizeCanvas());
 
     // Store peak values and hold times
     this.peaks = new Array(this.barCount).fill(0);
     this.peakHolds = new Array(this.barCount).fill(0);
+  }
 
-    // Color gradient
-    this.gradientColors = [
-      { stop: 0.0, color: '#1e45cb' }, // Deep blue
-      { stop: 0.5, color: '#4a9eff' }, // Light blue
-      { stop: 0.8, color: '#c4e0ff' }, // Very light blue
-      { stop: 1.0, color: '#ffffff' } // White
-    ];
+  resizeCanvas() {
+    const canvasWidth = this.ctx.canvas.width;
+    this.barWidth = Math.max(6, canvasWidth / 100);
+    this.barCount = Math.floor(canvasWidth / (this.barWidth + this.barSpacing));
 
+    this.peaks = new Array(this.barCount).fill(0);
+    this.peakHolds = new Array(this.barCount).fill(0);
     this.initializeGradient();
   }
 
@@ -46,80 +51,54 @@ class WinampAudioAnalyzer {
 
   drawBars() {
     requestAnimationFrame(() => this.drawBars());
-
-    // Get frequency data
     this.analyser.getByteFrequencyData(this.dataArray);
 
-    // Clear canvas
-    this.ctx.fillStyle = '#000000';
+    this.ctx.fillStyle = '#000';
     this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
     const barTotalWidth = this.barWidth + this.barSpacing;
     const scale = this.ctx.canvas.height / 255;
+    const startX = (this.ctx.canvas.width - this.barCount * barTotalWidth) / 2;
 
-    // Calculate starting x position to center the bars
-    const totalWidth = this.barCount * barTotalWidth;
-    const startX = (this.ctx.canvas.width - totalWidth) / 2;
-
-    // Draw frequency bars
     for (let i = 0; i < this.barCount; i++) {
-      // Get frequency value for this bar
+      // Fix: Correct calculation of the index for each bar
       const dataIndex = Math.floor(i * (this.bufferLength / this.barCount));
-      let value = this.dataArray[dataIndex] * scale;
+      let value = this.dataArray[dataIndex] * scale * (this.audio.volume || 1);
 
-      // Apply volume scaling
-      value *= (this.audio.volume || 1);
-
-      // Update peak value
+      // Apply peak decay and hold
       if (value > this.peaks[i]) {
         this.peaks[i] = value;
         this.peakHolds[i] = this.peakHoldTime;
+      } else if (this.peakHolds[i] > 0) {
+        this.peakHolds[i]--;
       } else {
-        if (this.peakHolds[i] > 0) {
-          this.peakHolds[i]--;
-        } else {
-          this.peaks[i] *= this.peakDecayRate;
-        }
+        this.peaks[i] *= this.peakDecayRate;
       }
 
       const x = startX + i * barTotalWidth;
       const height = Math.max(value, this.minHeight);
-
-      // Draw the main bar
       this.ctx.fillStyle = this.gradient;
-      this.ctx.fillRect(x,
-        this.ctx.canvas.height - height,
-        this.barWidth,
-        height);
+      this.ctx.fillRect(x, this.ctx.canvas.height - height, this.barWidth, height);
 
-      // Draw peak line
-      const peakHeight = 2;
-      this.ctx.fillStyle = '#ffffff';
-      this.ctx.fillRect(x,
-        this.ctx.canvas.height - this.peaks[i] - peakHeight,
-        this.barWidth,
-        peakHeight);
+      this.ctx.fillStyle = '#fff';
+      this.ctx.fillRect(x, this.ctx.canvas.height - this.peaks[i] - 2, this.barWidth, 2);
     }
 
-    // Add scanline effect
     this.drawScanlines();
   }
 
   drawScanlines() {
-    // Add subtle scanline effect
     this.ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
     for (let i = 0; i < this.ctx.canvas.height; i += 4) {
       this.ctx.fillRect(0, i, this.ctx.canvas.width, 1);
     }
   }
 
-  // Method to change color scheme
   setColorScheme(colors) {
     this.gradientColors = colors;
     this.initializeGradient();
   }
 
-  // Classic Winamp color schemes
   static get COLOR_SCHEMES() {
     return {
       CLASSIC: [
@@ -149,4 +128,4 @@ class WinampAudioAnalyzer {
 
 }
 
-export default WinampAudioAnalyzer;
+export default Visualizer;
