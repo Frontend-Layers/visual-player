@@ -16,6 +16,8 @@ import prettify from 'gulp-prettify';
 import htmlMin from 'gulp-htmlmin';
 import size from 'gulp-size';
 
+import Twig from 'twig';
+
 /**
  * Tools
  */
@@ -86,6 +88,7 @@ const htmlGenerate = () =>
   src([
     './src/**/*.html',
     '!./src/report/**',
+    '!./src/doc/**',
     '!./src/test/**',
     '!./src/javascript/**',
     '!./src/node_modules/**',
@@ -134,7 +137,8 @@ const testHtml = (done) => {
       'dist/javascript/**',
       'dist/report/**',
       'dist/doc/**',
-      'node_modules/**'
+      'node_modules/**',
+      'dist/template.html'
     ]
   });
   done();

@@ -10,7 +10,7 @@ const { src, dest } = gulp;
  * System
  */
 import connect from 'gulp-connect';
-
+import path from 'path';
 
 /**
  * Notification
@@ -51,10 +51,12 @@ const cfg = {
   src: {
     scss: './src/scss/**/*.scss',
     css: './src/styles/**/*.css',
+    jsComponentsScss: './src/javascript/**/*.scss'
   },
   dest: {
     scss: './src/styles/',
     css: './dist/styles/',
+    jsComponentsCss: './src/javascript/'
   }
 };
 
@@ -80,7 +82,32 @@ const scss = () =>
     )
     .pipe(sourcemaps.write('./'))
     .pipe(dest(cfg.dest.scss))
-    .pipe(dest(cfg.dest.css))
+    .pipe(dest(cfg.dest.css));
+
+
+/**
+ * Styles for JS components
+ *
+ * @returns
+ */
+const scssInJs = () => {
+  return src('./src/javascript/**/*.scss')
+    .pipe(plumber({ errorHandler }))
+    .pipe(sourcemaps.init())
+    .pipe(
+      sass({
+        outputStyle: 'expanded',
+        errLogToConsole: false,
+        includePaths: ['node_modules', 'bower_components', 'src', '.'],
+        quietDeps: true,
+      })
+    )
+    .pipe(sourcemaps.write('./'))
+    .pipe(dest((file) => file.base))
+    .pipe(connect.reload());
+};
+
+
 
 /**
  * Styles Reload
@@ -105,4 +132,4 @@ const cssCompress = (done) =>
     .pipe(connect.reload())
     .on('end', done);
 
-export { scss, cssCompress, stylesReload };
+export { scss, cssCompress, stylesReload, scssInJs };

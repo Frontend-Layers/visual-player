@@ -1,34 +1,21 @@
 import gulp from 'gulp';
 const { src, dest, parallel } = gulp;
 
-/**
- * System
- */
-import { deleteAsync } from 'del';
+import connect from 'gulp-connect';
+
 import localtunnel from 'localtunnel';
 
-/**
- * Versioning
- */
-import bump from 'gulp-bump';
-
-/**
- * Server
- */
-import connect from 'gulp-connect';
 import open from 'open';
 import browserSync from 'browser-sync';
+import net from 'net';
+
+import { log } from './lib/utils.js';
 
 /**
  * Environment
  */
 import dotenv from 'dotenv';
 dotenv.config();
-
-/**
- * Custom
- */
-import { errorHandler } from './lib/utils.js';
 
 /**
  * Config
@@ -66,16 +53,6 @@ const handleServerError = (error) => {
   return error;
 };
 
-/**
- * Logging
- */
-const log = (message, color = '\x1b[32m') => {
-  const reset = '\x1b[0m';
-  const timestamp = new Date().toLocaleTimeString('en-GB', { hour12: false });
-  console.log(`[${color}${timestamp}${reset}] ${message}`);
-};
-
-import net from 'net';
 
 /**
  * Create Local Web Server
@@ -124,65 +101,10 @@ const openBrowser = async (done) => {
   log(`[Browser] Opening browser at: ${cfg.server.uri}`, '\x1b[35m');
   try {
     await open(cfg.server.uri);
-    done();
-  } catch (err) {
-    log(`[Browser] Failed to open: ${err.message}`, '\x1b[31m');
-    done(err);
-  }
-};
-
-/**
- * Patching
- * Bump the version in package.json
- */
-const bumper = (done) =>
-  src('./package.json')
-    .pipe(bump())
-    .pipe(dest('./'))
-    .on('end', done);
-
-/**
- * Clean
- * Delete the build directory
- */
-const cleanBuild = async (done) => {
-  try {
-    await deleteAsync(['./build/**/*']);
-    log('[Clean] Build directory cleaned', '\x1b[32m');
-    done();
   } catch (error) {
-    log(`[Clean] Failed to clean build: ${error.message}`, '\x1b[31m');
-    done(error);
-  }
-};
-
-
-/**
- * Clean
- * Delete the dist directory
- */
-const cleanDist = async (done) => {
-  try {
-    await deleteAsync(['./dist/**/*']);
-    log('[Clean] Dist directory cleaned', '\x1b[32m');
+    log(`[Browser] ${error}`, '\x1b[32m');
+  } finally {
     done();
-  } catch (error) {
-    log(`[Clean] Failed to clean dist: ${error.message}`, '\x1b[31m');
-    done(error);
-  }
-};
-/**
- * Clean
- * Delete the layouts directories in dist and build
- */
-const cleanHTML = async (done) => {
-  try {
-    await deleteAsync(['./dist/layouts', './build/layouts']);
-    log('[Clean] HTML layouts cleaned', '\x1b[32m');
-    done();
-  } catch (error) {
-    log(`[Clean] Failed to clean HTML: ${error.message}`, '\x1b[31m');
-    done(error);
   }
 };
 
@@ -208,14 +130,12 @@ const openProxyTunnel = async (done) => {
         log('[Tunnel] Closed', '\x1b[33m');
       });
 
-      done();
     } catch (error) {
-      log(`[Tunnel] Failed to create: ${error.message}`, '\x1b[31m');
-      done(error);
+      log(`[Tunnel] ${error}`, '\x1b[32m');
+    } finally {
+      done();
     }
-  } else {
-    done();
   }
 };
 
-export { openServer, openBrowser, bumper, cleanBuild, cleanDist, cleanHTML, openProxyTunnel, bs };
+export { openServer, openBrowser, openProxyTunnel, bs };

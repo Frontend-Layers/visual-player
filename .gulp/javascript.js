@@ -8,12 +8,13 @@ import gulp from 'gulp';
 const { src, dest } = gulp;
 
 import standard from 'gulp-standard';
+import concat from 'gulp-concat';
+import connect from 'gulp-connect';
 
 /**
  * System
  */
 import path from 'path';
-import connect from 'gulp-connect';
 import fs from 'fs';
 
 /**
@@ -38,7 +39,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import url from '@rollup/plugin-url';
-import concat from 'gulp-concat';
 import * as babelCore from '@babel/core';
 
 
@@ -49,6 +49,7 @@ import cached from 'gulp-cached';
 import changed from 'gulp-changed';
 import remember from 'gulp-remember';
 
+
 /**
  * CSS in JS
  */
@@ -56,9 +57,14 @@ import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 
 /**
+ * HTML in JS
+ */
+import nunjucks from 'rollup-plugin-nunjucks';
+
+/**
  * Custom
  */
-import { errorHandler } from './lib/utils.js';
+import { errorHandler, log } from './lib/utils.js';
 
 const __dirname = path.resolve(path.dirname(''));
 
@@ -87,6 +93,7 @@ const rollupCfg = () => ({
   input: cfg.roll.input,
   cache: true, // Enable Rollup cache
   plugins: [
+    nunjucks(),
     postcss({
       modules: false,
       extract: false,
@@ -97,15 +104,13 @@ const rollupCfg = () => ({
         autoprefixer(),
       ]
     }),
-
     babel({
       exclude: 'node_modules/**',
       presets: ['@babel/preset-env'],
       babelHelpers: 'bundled'
     }),
     url({
-      include: ['**/*.html', '**/*.svg', '**/*.png', '**/*.jp(e)?g', '**/*.gif', '**/*.webp'],
-      // limit: 10 * 1024 // Only inline files smaller than 10kb
+      include: ['**/*.svg', '**/*.png', '**/*.jp(e)?g', '**/*.gif', '**/*.webp'],
     }),
     json(),
     alias({
@@ -144,11 +149,9 @@ const roll = async function (done) {
       sourcemap: true,
     });
 
-    done();
   } catch (error) {
-    if (typeof errorHandler === 'function') {
-      errorHandler.call(this, error);
-    }
+    log(`[JS] ${error}`, '\x1b[32m');
+  } finally {
     done();
   }
 };

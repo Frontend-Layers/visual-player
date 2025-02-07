@@ -1,0 +1,27 @@
+/* Play/Pause button */
+
+.play-button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: var(--primary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+
+  user-select: none;
+}
+
+.play-button:hover {
+  background-color: #357abd;
+}
+
+.play-button svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}

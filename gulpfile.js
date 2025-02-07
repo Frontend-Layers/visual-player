@@ -9,7 +9,7 @@ import gulp from 'gulp';
  */
 
 // Styles
-import { scss, cssCompress, stylesReload } from './.gulp/styles.js';
+import { scss, cssCompress, stylesReload, scssInJs } from './.gulp/styles.js';
 
 // JavaScript
 import { roll, scriptsReload, compressJS, jsConcatVendorLibs } from './.gulp/javascript.js';
@@ -22,10 +22,10 @@ import { webpCompress, copyImages, copyBuildImages } from './.gulp/images.js';
 import getSprite from './.gulp/sprite.js';
 
 // Server
-import { openServer, openBrowser, bumper, cleanBuild, cleanDist, cleanHTML, openProxyTunnel } from './.gulp/server.js';
+import { openServer, openBrowser, openProxyTunnel } from './.gulp/server.js';
 
 // Misc
-import { copyBuildFiles, copyCommonFiles } from './.gulp/misc.js';
+import { copyBuildFiles, copyCommonFiles, bumper, cleanBuild, cleanDist, cleanHTML } from './.gulp/misc.js';
 
 // Tests
 import { mobileTestRes, htmlSpeedRes, cssTestRes } from './.gulp/tests.js';
@@ -105,8 +105,10 @@ const cfgWatch = {
 
 const watcher = (done) => {
   watch('./src/scss/**/*.scss', cfgWatch, series(scss, stylesReload));
+  watch('./src/javascript/**/*.scss', cfgWatch, series(scssInJs, roll, jsConcat, scriptsReload));
+
   watch('./src/**/*.html', cfgWatch, series(htmlGenerate, cleanHTML, htmlReload, testHtml));
-  watch('./src/javascript/**/*.js', cfgWatch, series(series(roll, jsConcat), scriptsReload));
+  watch('./src/javascript/**/*.js', cfgWatch, series(roll, jsConcat, scriptsReload));
   watch('./src/images/**/*', cfgWatch, series(webpCompress, copyImages));
   watch([
     './src/favicons/**/*',
@@ -127,7 +129,7 @@ export default series(
   cleanBuild,
   copyCommon,
   parallel(
-    series(series(roll, jsConcat)),
+    series(series(scssInJs, roll, jsConcat)),
     series(scss),
     series(webpCompress, copyImages),
     series(htmlGenerate, cleanHTML, openBrowser),
@@ -150,7 +152,7 @@ const build = series(
   cleanBuild,
   copyBuildFiles,
   parallel(
-    series(series(roll, jsConcat, compressJS)),
+    series(series(scssInJs, roll, jsConcat, compressJS)),
     series(scss, cssCompress),
     series(webpCompress, copyImages, copyBuildImages),
     series(htmlGenerate, cleanHTML, htmlCompress)

@@ -1,0 +1,46 @@
+/* Progress bar styles */
+.progress {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 0 10px;
+}
+
+.progress-container {
+  background: #ddd;
+  height: 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 2px;
+  width: 0;
+  transition: width 0.1s linear;
+  will-change: width;
+  transform: translateZ(0);
+}
+
+/* Time display */
+.time-display {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Prevent text selection while dragging */
+.volume-slider.dragging {
+  user-select: none;
+}
+/*# sourceMappingURL=progress-bar.css.map */

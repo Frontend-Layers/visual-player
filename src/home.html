@@ -6,8 +6,19 @@
     <div class="row">
       <div class="col">
 
-        <visual-player src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></visual-player>
-        <visual-player src="./music/SoundHelix-Song-1.mp3"></visual-player>
+        <h3 class="mt-5">test 1</h3>
+        <p>default view</p>
+
+        <visual-player id="visualPlayer" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></visual-player>
+
+        <h3 class="mt-5">test 2</h3>
+        <p>default view with <code>figure</code> wrapper. Without <code>Progress Bar</code></p>
+
+        <figure>
+          <figcaption>Listen to the SoundHelix-Song-1:</figcaption>
+          <visual-player src="./music/SoundHelix-Song-1.mp3"></visual-player>
+          <a href="./music/SoundHelix-Song-1.mp3">Download audio</a>
+        </figure>
 
       </div>
     </div><!-- /.row -->

@@ -4,6 +4,8 @@ import mobileFriendlyTest from 'mobile-friendly-test-npm';
 import htmlSpeed from 'html-speed';
 import cssTest from 'css-test-npm';
 
+import { log } from './lib/utils.js';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -13,13 +15,14 @@ dotenv.config();
 const mftApiKey = process.env.MFT_KEY || '';
 const mftUrl = process.env.PROXY_URL || '';
 
-const mobileTestRes = (done) => {
-  mobileFriendlyTest(mftUrl, mftApiKey)
-    .then(() => done())
-    .catch((error) => {
-      console.error(error);
-      done(error);
-    });
+const mobileTestRes = async (done) => {
+  try {
+    await mobileFriendlyTest(mftUrl, mftApiKey);
+  } catch (error) {
+    log(`[mobileFriendlyTest] ${error}`, '\x1b[32m');
+  } finally {
+    done();
+  }
 };
 
 
@@ -29,13 +32,14 @@ const mobileTestRes = (done) => {
 const hstApiKey = process.env.HST_KEY || '';
 const hstUrl = process.env.PROXY_URL || '';
 
-const htmlSpeedRes = (done) => {
-  htmlSpeed(hstUrl, hstApiKey)
-    .then(() => done())
-    .catch((error) => {
-      console.error(error);
-      done(error);
-    });
+const htmlSpeedRes = async (done) => {
+  try {
+    await htmlSpeed(hstUrl, hstApiKey);
+  } catch (error) {
+    log(`[htmlSpeedRes] ${error}`, '\x1b[32m');
+  } finally {
+    done();
+  }
 };
 
 
@@ -44,13 +48,14 @@ const htmlSpeedRes = (done) => {
  */
 const cssUrl = process.env.PROXY_URL || '';
 
-const cssTestRes = (done) => {
-  cssTest(cssUrl)
-    .then(() => done())
-    .catch((error) => {
-      console.error(error);
-      done(error);
-    });
+const cssTestRes = async (done) => {
+  try {
+    await cssTest(cssUrl);
+  } catch (error) {
+    log(`[cssTest] ${error}`, '\x1b[32m');
+  } finally {
+    done();
+  }
 };
 
 export { mobileTestRes, htmlSpeedRes, cssTestRes };

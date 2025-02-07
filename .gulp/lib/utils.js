@@ -35,4 +35,14 @@ const errorHandler = function (error, done) {
   }
 };
 
-export { errorHandler };
+
+/**
+ * Logging
+ */
+const log = (message, color = '\x1b[32m') => {
+  const reset = '\x1b[0m';
+  const timestamp = new Date().toLocaleTimeString('en-GB', { hour12: false });
+  console.log(`[${color}${timestamp}${reset}] ${message}`);
+};
+
+export { errorHandler, log };

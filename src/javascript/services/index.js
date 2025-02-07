@@ -1,12 +1,14 @@
 /**
  * HTML / CSS resources
  */
-import initStyles from './styles.js';
-import initElements from './elements.js';
-import initAudio from './audio.js';
-import initVisualizer from './visualizer.js';
+import initStyles from './styles';
+import initElements from './elements';
+import initAudio from './audio';
+import initVisualizer from './visualizer';
+import initPlugins from './plugins';
 
 export default function initServices($) {
+  initPlugins($);
   initAudio($);
   initStyles($);
   initElements($);

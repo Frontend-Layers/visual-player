@@ -5,38 +5,18 @@
  * A custom audio player implementation with modern UI and cross-browser support.
  */
 
-/**
- * Visualizer
- */
-import initServices from './services';
-import initUI from './ui';
+import './visual-player';
+import play from './plugins/play';
+import volume from './plugins/volume';
+import progressBar from './plugins/progress-bar';
 
-class VisualPlayer extends HTMLElement {
+document.addEventListener('DOMContentLoaded', () => {
+  const allPlayers = document.querySelectorAll('visual-player');
+  allPlayers.forEach(element => {
+    element.use([play, volume]);
+  });
 
-  constructor() {
-    super();
-    // Create shadow DOM for style encapsulation
-    this.shadow = this.attachShadow({ mode: 'open' });
+  const player = document.querySelector('#visualPlayer');
+  player.use([progressBar]);
 
-    initServices(this);
-    initUI(this);
-  }
-
-  /**
-   * Audio inheritance
-   */
-  static get observedAttributes() {
-    return ['src', 'autoplay', 'controls', 'crossorigin', 'loop',
-      'muted', 'preload', 'volume', 'playbackrate'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (this.audio) {
-      this.audio.setAttribute(name, newValue);
-    }
-  }
-
-}
-
-// Register web component
-customElements.define('visual-player', VisualPlayer);
+});

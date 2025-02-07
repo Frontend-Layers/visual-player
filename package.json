@@ -1,6 +1,6 @@
 {
   "name": "visual-player",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Visual Player",
   "directories": {
     "doc": "docs",
@@ -99,10 +99,12 @@
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "rollup": "^4.32.1",
+    "rollup-plugin-nunjucks": "^1.0.0",
     "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.83.4",
     "scss-mixins-npm": "^1.0.6",
     "scss-reset": "^1.4.6",
+    "twig": "^1.17.1",
     "ui-explorer": "^1.2.1"
   },
   "main": "babel.config.js",
