@@ -1,4 +1,9 @@
-/* Main container */
+@charset 'utf-8';
+
+@use 'host';
+
+@use '../../../../node_modules/scss-reset/total';
+
 .container {
   display: flex;
   background: var(--background-color);
@@ -7,11 +12,8 @@
   padding: 10px;
 }
 
-/* Controls wrapper */
 .controls {
   display: flex;
   gap: 12px;
   align-items: center;
 }
-
-

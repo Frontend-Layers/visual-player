@@ -1,0 +1,33 @@
+@layer visual-player-dark {
+
+  .visual-player {
+
+    .container {
+      background: #212529;
+    }
+
+    /* Play/Pause button */
+    .play-button {
+      background: #6c757d;
+      transition: background-color 0.2s;
+    }
+
+    .play-button:hover {
+      background-color: #5c636a;
+    }
+
+    .volume-fill {
+      background: #6c757d;
+    }
+
+    .volume-handle {
+      background: #ccc;
+      border-color: #5c636a;
+    }
+
+    .volume-display {
+      color: #fff;
+    }
+  }
+
+}

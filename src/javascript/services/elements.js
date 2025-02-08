@@ -1,4 +1,4 @@
-import html from 'root/dist/template.html';
+import html from '../ui/templates/template.html';
 
 export default function initElements($) {
   const template = html;
@@ -17,7 +17,7 @@ export default function initElements($) {
   $.shadow.innerHTML += contentHTML || template;
 
   // Set up main container
-  $.container = $.shadow.querySelector('.container');
+  $.container = $.shadow.querySelector('.visual-player');
 
   /**
    * Add HTML template
@@ -27,7 +27,7 @@ export default function initElements($) {
    * @returns
    */
   $.addTpl = (html, options = {}) => {
-    const shadow = $.shadowRoot;
+    const shadow = $.container;
     const { selector } = options;
 
     const appendHTML = (target, html) => {

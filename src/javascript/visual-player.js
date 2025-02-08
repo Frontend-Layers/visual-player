@@ -21,12 +21,25 @@ class VisualPlayer extends HTMLElement {
    * Audio inheritance
    */
   static get observedAttributes() {
-    return ['src', 'autoplay', 'controls', 'crossorigin', 'loop',
-      'muted', 'preload', 'volume', 'playbackrate'];
+    return [
+      'src',
+      'autoplay',
+      'controls',
+      'crossorigin',
+      'loop',
+      'muted',
+      'preload',
+      'volume',
+      'playbackrate',
+      'theme'
+    ];
   }
 
+  /**
+   * Handle attribute changes
+   */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (this.audio) {
+    if (this.audio && name !== 'theme') {
       this.audio.setAttribute(name, newValue);
     }
   }
