@@ -275,7 +275,12 @@ input:focus {
 
 .controls {
   display: flex;
-  gap: 12px;
   align-items: center;
+}
+
+@media only screen and (max-width: 575px) {
+  .container {
+    display: block;
+  }
 }
 /*# sourceMappingURL=visual-player.css.map */

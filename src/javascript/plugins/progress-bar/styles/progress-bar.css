@@ -9,7 +9,7 @@
 
 .progress-container {
   background: #ddd;
-  height: 8px;
+  height: 10px;
   border-radius: 2px;
   cursor: pointer;
   position: relative;
@@ -32,7 +32,7 @@
 
 /* Time display */
 .time-display {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: monospace, -apple-system, sans-serif;
   font-size: 12px;
   color: #666;
   text-align: right;
@@ -42,5 +42,11 @@
 /* Prevent text selection while dragging */
 .volume-slider.dragging {
   user-select: none;
+}
+
+@media only screen and (max-width: 575px) {
+  .progress {
+    margin: 10px 0 0;
+  }
 }
 /*# sourceMappingURL=progress-bar.css.map */

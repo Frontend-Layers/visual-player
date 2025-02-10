@@ -148,7 +148,7 @@ export default function initStyles($) {
   });
 
   // Apply initial theme if set
-  if ($.getAttribute('theme')) {
+  if ($.hasAttribute('theme')) {
     $.addTheme().catch(error => {
       console.error('Error applying initial theme:', error);
     });

@@ -1,6 +1,6 @@
 {
   "name": "visual-player",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Visual Player",
   "directories": {
     "doc": "docs",
@@ -25,7 +25,8 @@
   "keywords": [
     "audio",
     "media",
-    "player"
+    "player",
+    "web-component"
   ],
   "bugs": {
     "url": "https://github.com/frontend-layers/html-base/issues"

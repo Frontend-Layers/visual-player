@@ -13,6 +13,7 @@ class VisualPlayer extends HTMLElement {
     super();
     // Create shadow DOM for style encapsulation
     this.shadow = this.attachShadow({ mode: 'open' });
+    this.componentName = 'visual-player';
 
     services(this);
   }
@@ -31,7 +32,8 @@ class VisualPlayer extends HTMLElement {
       'preload',
       'volume',
       'playbackrate',
-      'theme'
+      'theme',
+      'single-player'
     ];
   }
 
@@ -39,7 +41,7 @@ class VisualPlayer extends HTMLElement {
    * Handle attribute changes
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    if (this.audio && name !== 'theme') {
+    if (this.audio && name !== 'theme' && name !== 'single-player') {
       this.audio.setAttribute(name, newValue);
     }
   }

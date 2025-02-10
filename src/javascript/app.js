@@ -13,10 +13,10 @@ import progressBar from './plugins/progress-bar';
 document.addEventListener('DOMContentLoaded', () => {
   const allPlayers = document.querySelectorAll('visual-player');
   allPlayers.forEach(element => {
-    element.use([play, volume]);
+    element.use([play(), volume({ initialVolume: 0.5 })]);
   });
 
   const player = document.querySelector('#visualPlayer');
-  player.use([progressBar]);
+  player.use([progressBar(), volume({ initialVolume: 0.2, volumeDisplay: false })]);
 
 });

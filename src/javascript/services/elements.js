@@ -17,7 +17,7 @@ export default function initElements($) {
   $.shadow.innerHTML += contentHTML || template;
 
   // Set up main container
-  $.container = $.shadow.querySelector('.visual-player');
+  $.container = $.shadow.querySelector('.' + $.componentName);
 
   /**
    * Add HTML template
@@ -29,14 +29,6 @@ export default function initElements($) {
   $.addTpl = (html, options = {}) => {
     const shadow = $.container;
     const { selector } = options;
-
-    const appendHTML = (target, html) => {
-      const temp = document.createElement('div');
-      temp.innerHTML = html;
-      while (temp.firstChild) {
-        target.appendChild(temp.firstChild);
-      }
-    };
 
     if (!selector) {
       appendHTML(shadow, html);
@@ -59,6 +51,29 @@ export default function initElements($) {
     });
   };
 
+  /**
+   * Appends HTML content to a target DOM element.
+   * Parses the HTML string into nodes and appends each child node to the target.
+   *
+   * @param {HTMLElement} target - The DOM element to which the HTML will be appended.
+   * @param {string} html - The HTML string to parse and append.
+   */
+  function appendHTML(target, html) {
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    while (temp.firstChild) {
+      target.appendChild(temp.firstChild);
+    }
+  };
+
+  /**
+   * Creates a DOM element from a single CSS-like selector string.
+   * Extracts the tag name (defaults to 'div' if not provided), adds classes,
+   * and sets the ID if specified in the selector.
+   *
+   * @param {string} selector - A CSS-like selector string (e.g., "div.class1.class2#id").
+   * @returns {HTMLElement} - The newly created DOM element with the specified attributes.
+   */
   const createElementFromSingleSelector = (selector) => {
     // Match tag name if present, otherwise use 'div'
     const tagMatch = selector.match(/^[a-zA-Z0-9-]+/);

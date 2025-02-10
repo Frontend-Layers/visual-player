@@ -3,32 +3,30 @@
  */
 
 export default function initPlugins($) {
-  $.plugins = new Map();
 
-  $.use = function(plugins, options = {}) {
+  // Plugins registry
+  $.plugins = [];
+
+  // Plugins factory
+  $.use = function(plugins) {
     if (!plugins) return;
 
-    if (!Array.isArray(plugins)) {
-      plugins = [[plugins, options]];
-    } else {
-      plugins = plugins.map(p => Array.isArray(p) ? p : [p, {}]);
-    }
+    plugins = plugins.map(p => {
+      if (typeof p === 'object') return p;
+      return null;
+    }).filter(Boolean);
 
-    plugins.forEach(([plugin, opts]) => {
-      if (typeof plugin === 'function') {
-        const instance = plugin($, opts);
-        $.plugins.set(plugin.name, instance);
+    plugins.forEach((plugin) => {
+
+      // bFirst tells the plugin that it is being called for the first time or several times.
+      let bFirst = true;
+      if ($.plugins.includes(plugin.id)) {
+        bFirst = false;
       }
+
+      plugin.run($, bFirst);
+      $.plugins.push(plugin.id);
     });
   };
 
-  loadPlugins($);
-}
-
-function loadPlugins($) {
-  $.plugins.forEach(plugin => {
-    if (typeof plugin.init === 'function') {
-      plugin.init();
-    }
-  });
 }
