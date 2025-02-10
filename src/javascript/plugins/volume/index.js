@@ -14,13 +14,7 @@ export default function VolumeSlider(options = {}) {
   return {
     id: 'volume',
     run: function($, bFirst) {
-      let bVolumeLabel = true;
-
-      if (cfg.volumeLabel === false) {
-        bVolumeLabel = false;
-      }
-
-      const tpl = tplSlider + (bVolumeLabel ? tplLabel : '');
+      let tpl = tplSlider + (cfg.volumeLabel ? tplLabel : '');
 
       if (bFirst) {
         $.addStyles(css);
@@ -29,19 +23,27 @@ export default function VolumeSlider(options = {}) {
           priority: 'none',
           selector: '.container .controls'
         });
-      }
+        setElements();
+        setAria();
+        setEvents();
+      } else {
+        tpl = tplSlider + tplLabel;
+        $.removeTpl(tpl, {
+          selector: '.container .controls'
+        });
 
-      setElements();
-      setAria();
-      setVolumeSlider();
+        tpl = tplSlider + (cfg.volumeLabel ? tplLabel : '');
+        $.addTpl(tpl, {
+          priority: 'none',
+          selector: '.container .controls'
+        });
+
+        setElements();
+        setAria();
+        setEvents();
+      }
 
       changeVolume(cfg.initialVolume);
-
-      if (bVolumeLabel === true) {
-        $.audio.addEventListener('volumechange', () => {
-          $.volumeLabel.textContent = `${Math.round($.audio.volume * 100)}%`;
-        });
-      }
 
       function setElements() {
         $.volumeSlider = $.shadow.querySelector('.volume-slider');
@@ -49,10 +51,11 @@ export default function VolumeSlider(options = {}) {
         $.volumeFill = $.shadow.querySelector('.volume-fill');
         $.volumeHandle = $.shadow.querySelector('.volume-handle');
         $.volumeLabel = $.shadow.querySelector('.volume-label');
-
-        if (bVolumeLabel === true) {
+        if ($.volumeLabel) {
           $.volumeLabel.textContent = `${Math.round($.audio.volume * 100)}%`;
         }
+        $.volumeFill.style.width = `${$.audio.volume * 100}%`;
+        $.volumeHandle.style.left = `${$.audio.volume * 100}%`;
       }
 
       function setAria() {
@@ -71,7 +74,13 @@ export default function VolumeSlider(options = {}) {
         $.volumeSlider.setAttribute('aria-valuenow', Math.round(v * 100));
       };
 
-      function setVolumeSlider() {
+      function setEvents() {
+        $.audio.addEventListener('volumechange', () => {
+          if ($.volumeLabel) {
+            $.volumeLabel.textContent = `${Math.round($.audio.volume * 100)}%`;
+          }
+        });
+
         let isDragging = false;
 
         const updateVolume = (clientX) => {
@@ -115,9 +124,6 @@ export default function VolumeSlider(options = {}) {
 
         $.volumeHandle.addEventListener('pointerdown', onHandlePointerDown);
         $.volumeSlider.addEventListener('click', onSliderClick);
-
-        $.volumeFill.style.width = `${$.audio.volume * 100}%`;
-        $.volumeHandle.style.left = `${$.audio.volume * 100}%`;
 
         $.volumeSlider.addEventListener('keydown', (e) => {
           let currentVolume = $.audio.volume;

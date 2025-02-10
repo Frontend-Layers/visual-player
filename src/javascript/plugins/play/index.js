@@ -10,25 +10,35 @@ export default function ButtonPlay(options = {}) {
   return {
     id: 'play',
     run: function($, bFirst) {
-      $.addStyles(css);
-      $.addTpl(tpl, {
-        priority: 'none',
-        selector: '.container .controls',
-        parent: 'existed'
-      });
 
-      // Initialize play button with SVG icon
-      $.playButton = $.shadow.querySelector('.play-button');
+      if (bFirst) {
+        $.addStyles(css);
 
-      $.playButton.addEventListener('click', () => togglePlay());
+        $.addTpl(tpl, {
+          priority: 'none',
+          selector: '.container .controls'
+        });
+        setElements();
+        setEvents();
+      }
 
-      $.audio.addEventListener('ended', () => {
-        $.playButton.innerHTML = createPlayIcon();
-      });
+      function setElements() {
 
-      $.audio.addEventListener('pause', () => {
-        $.playButton.innerHTML = createPlayIcon();
-      });
+        // Initialize play button with SVG icon
+        $.playButton = $.shadow.querySelector('.play-button');
+      }
+
+      function setEvents() {
+        $.playButton.addEventListener('click', () => togglePlay());
+
+        $.audio.addEventListener('ended', () => {
+          $.playButton.innerHTML = createPlayIcon();
+        });
+
+        $.audio.addEventListener('pause', () => {
+          $.playButton.innerHTML = createPlayIcon();
+        });
+      }
 
       /**
        * Toggle play/pause state

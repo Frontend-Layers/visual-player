@@ -1,0 +1,1 @@
+{"version":3,"sources":["plugins/visualizer/styles/data:;charset=utf-8,/*%20Visualizer%20*/%0A%0A.visualizer%20%7B%0A%20%20width:%20100%25;%0A%20%20height:%20100px;%0A%7D%0A"],"names":[],"mappings":"AAAA;AAEA;EACE;EACA","sourcesContent":["/* Visualizer */\n\n.visualizer {\n  width: 100%;\n  height: 100px;\n}\n"],"file":"visualizer.css"}
